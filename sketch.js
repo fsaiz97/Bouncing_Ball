@@ -3,24 +3,13 @@ const DAMPING = -0.8;
 const randomColor = () =>
   "#" + Math.floor(Math.random() * 16777215).toString(16);
 
-let balls;
+let balls, amountOfBalls;
 
 function setup() {
   createCanvas(windowWidth, windowHeight / 2);
 
-  balls = [];
-  for (let i = 0; i < 5; i++) {
-    balls.push(
-      ballFactory(
-        randomColor(),
-        randomInt(0, width),
-        randomInt(0, height),
-        randomInt(height * 0.03, height * 0.2),
-        randomInt(-10, 10),
-        randomInt(-10, 10)
-      )
-    );
-  }
+  amountOfBalls = 5;
+  balls = generateBalls(amountOfBalls);
 }
 
 function draw() {
@@ -85,6 +74,25 @@ function ballFactory(colour, x, y, radius, xSpeed, ySpeed) {
   };
 }
 
+function generateBalls(amount) {
+    let ballArray = [];
+    for (let i = 0; i < amount; i++) {
+        ballArray.push(
+            ballFactory(
+                randomColor(),
+                randomInt(0, width),
+                randomInt(0, height),
+                randomInt(height * 0.03, height * 0.2),
+                randomInt(-10, 10),
+                randomInt(-10, 10)
+            )
+        );
+    
+  }
+
+  return ballArray;
+}
+
 function randomInt(start, stop) {
   return Math.floor(Math.random() * (stop - start) + start);
 }
@@ -92,3 +100,11 @@ function randomInt(start, stop) {
 function verlet(currPos, prevPos, acc, dt) {
   return 2*currPos - prevPos + acc*dt*dt;
 }
+
+let resetButton = document.getElementById("reset");
+
+function resetBalls() {
+    balls = generateBalls(amountOfBalls);
+}
+
+resetButton.onclick = resetBalls;
